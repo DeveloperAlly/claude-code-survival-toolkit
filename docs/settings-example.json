@@ -1,0 +1,103 @@
+{
+  "cleanupPeriodDays": 99999,
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node hooks/session-register.js",
+            "statusMessage": "Checking for parallel sessions..."
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node hooks/mdx-constraints-injector.js",
+            "statusMessage": "Checking for platform constraints..."
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node hooks/pre-tool-guard.js",
+            "statusMessage": "Checking command safety..."
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node hooks/pre-tool-guard.js",
+            "statusMessage": "Checking file write..."
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node hooks/read-logger.js",
+            "async": true
+          }
+        ]
+      },
+      {
+        "matcher": "Grep",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node hooks/grep-loop-guard.js",
+            "statusMessage": "Checking for search loops..."
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node hooks/session-register.js",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node hooks/pre-compact-checkpoint.js",
+            "statusMessage": "Writing mid-session checkpoint..."
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node hooks/post-tool-verify.js",
+            "statusMessage": "Tracking consecutive failures..."
+          }
+        ]
+      }
+    ]
+  }
+}

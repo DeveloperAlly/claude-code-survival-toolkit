@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.claude.backup</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/path/to/your/scripts/backup-vscode-state.sh</string>
+    </array>
+
+    <key>StartInterval</key>
+    <integer>1800</integer>
+
+    <key>StandardOutPath</key>
+    <string>/tmp/claude-backup.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/tmp/claude-backup-error.log</string>
+
+    <key>RunAtLoad</key>
+    <true/>
+</dict>
+</plist>
+<!--
+INSTALL:
+  1. Edit ProgramArguments path to point to your backup-vscode-state.sh
+  2. cp com.claude.backup.plist ~/Library/LaunchAgents/
+  3. launchctl load ~/Library/LaunchAgents/com.claude.backup.plist
+
+UNINSTALL:
+  launchctl unload ~/Library/LaunchAgents/com.claude.backup.plist
+  rm ~/Library/LaunchAgents/com.claude.backup.plist
+
+VERIFY:
+  launchctl list | grep claude-backup
+  cat /tmp/claude-backup.log
+-->
